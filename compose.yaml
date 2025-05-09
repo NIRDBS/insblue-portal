@@ -1,7 +1,7 @@
 name: insblue-portal
 include:
   # UI modules
-  - ./frontend/insbluemin-forms/docker-compose.yml
+  - https://raw.githubusercontent.com/NIRDBS/insblue-portal/refs/heads/main/frontend/insbluemin-forms/docker-compose.yaml
 
 networks:
   traefik-network:
