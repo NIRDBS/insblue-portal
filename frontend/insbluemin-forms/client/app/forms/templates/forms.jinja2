@@ -1,0 +1,185 @@
+{% extends 'base.jinja2' %}
+{% block stylesheet %}
+  <link rel="stylesheet" href="{{ url_for('Forms.static',filename='dist/css/forms.css') }}">
+  {#  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">#}
+  {#  <link rel="stylesheet" href="{{ url_for('Forms.static',filename='dist/css/bootstrap.css') }}">#}
+  {#  <link rel="stylesheet" href="{{ url_for('insbluecore.static',filename='dist/css/main.css') }}">#}
+{% endblock %}
+
+{% block html_head %}
+  {#  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css">#}
+  <script src="{{ url_for('Forms.static',filename='dist/@formio/js/dist/formio.embed.js') }}"></script>
+{% endblock %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block main %}
+  <div x-data="formTable()" class="relative">
+    <div class="pb-4 bg-white dark:bg-gray-900">
+      <label for="table-search" class="sr-only">Search</label>
+      <div class="relative mt-1">
+        <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+          <!-- search icon -->
+          <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+          </svg>
+        </div>
+        <input type="text" id="table-search" x-model="search" placeholder="Cautare"
+               class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-100 focus:outline-none rounded-sm w-full bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+      </div>
+    </div>
+
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" style="width:100%">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <tr>
+        <th scope="col" class="px-6 py-3" style="width:60%">
+          Formular
+        </th>
+        {#        <th scope="col" class="px-6 py-3">#}
+        {#          Descriere#}
+        {#        </th>#}
+        <th scope="col" class="px-6 py-3">
+          Categorie
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Actiune
+        </th>
+      </tr>
+      </thead>
+      <tbody id="forms-table-body">
+      {#      {% for form in forms %}#}
+      {##}
+      {#        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">#}
+      {#          <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">#}
+      {#            <a href="{{ form.path }}">{{ form.title }}</a>#}
+      {#          </th>#}
+      {#          <td class="px-6 py-4">#}
+      {#            {% if form.components[0]['key'] == 'form_description' %}#}
+      {#              {{ form.components[0]['html'] }}#}
+      {#            {% endif %}#}
+      {#          </td>#}
+      {#          <td class="px-6 py-4">#}
+      {#            {{ form.category | join(', ') }}#}
+      {#          </td>#}
+      {#          <td class="px-6 py-4">#}
+      {#            <a href="{{ form.path }}">#}
+      {#              <i class="fa-solid fa-arrow-up-right-from-square"></i>#}
+      {#            </a>#}
+      {#            <a href="{{ form.path }}/submission">#}
+      {#              <i class="fa-solid fa-eye"></i>#}
+      {#            </a>#}
+      {#          </td>#}
+      {#        </tr>#}
+      {#      {% endfor %}#}
+
+      {#      {% for form in forms %}#}
+      {#        <tr x-show="filterMatch('{{ form.title }}', '{{ form.path }}', '{{ form.category | join(', ') }}')"#}
+      {#            class="form-row bg-white border-b dark:bg-gray-800 dark:border-gray-700">#}
+      {#          <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">#}
+      {#            <a href="{{ form.path }}">{{ form.title }}</a>#}
+      {#          </th>#}
+      {#          <td class="px-6 py-4">#}
+      {#            {% if form.components[0]['key'] == 'form_description' %}#}
+      {#              {{ form.components[0]['html'] | safe }}#}
+      {#            {% endif %}#}
+      {#          </td>#}
+      {#          <td class="px-6 py-4">#}
+      {#            {{ form.category | join(', ') }}#}
+      {#          </td>#}
+      {#          <td class="px-6 py-4">#}
+      {#            <a href="{{ form.path }}"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>#}
+      {#            <a href="{{ form.path }}/submission"><i class="fa-solid fa-eye"></i></a>#}
+      {#          </td>#}
+      {#        </tr>#}
+      {#      {% endfor %}#}
+
+      <template x-for="form in filteredForms" :key="form.path">
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            <a :href="form.path" x-text="form.title"></a>
+          </th>
+          {#          <td class="px-6 py-4" x-html="form.components[0]?.html || ''"></td>#}
+          <td class="px-6 py-4" x-text="form.category.join(', ')"></td>
+          <td class="px-6 py-4 space-x-1">
+            <a :href="form.path" data-tooltip-target="tooltip-form-open" data-tooltip-placement="top" class="justify-center items-center h-10">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              <div id="tooltip-form-open" role="tooltip"
+                   class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                Deschide formularul
+                <div class="tooltip-arrow" data-popper-arrow></div>
+              </div>
+            </a>
+            <a :href="form.path + '/submission'" data-tooltip-target="tooltip-form-view" data-tooltip-placement="top" class="justify-center items-center h-10">
+              <i class="fa-solid fa-eye"></i>
+              <div id="tooltip-form-view" role="tooltip"
+                   class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                Vizualizeaza datele incarcate
+                <div class="tooltip-arrow" data-popper-arrow></div>
+              </div>
+            </a>
+            <span data-tooltip-target="tooltip-form-info" data-tooltip-placement="top" class="justify-center items-center h-10">
+              <i class="fas fa-circle-info" aria-hidden="true"></i>
+              <div id="tooltip-form-info" role="tooltip" x-html="form.description"
+                   class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                [placeholder]
+                <div class="tooltip-arrow" data-popper-arrow></div>
+              </div>
+            </span>
+          </td>
+        </tr>
+      </template>
+      </tbody>
+    </table>
+  </div>
+
+  {#  <div class="grid grid-cols-2 gap-4">#}
+  {#    <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>#}
+  {#    <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>#}
+  {#    <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>#}
+  {#    <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>#}
+  {#  </div>#}
+
+  <script>
+      function formTable() {
+          return {
+              search: '',
+              forms: {{ forms | tojson }},
+              get filteredForms() {
+                  const q = this.search.toLowerCase();
+                  return this.forms.filter(f =>
+                      f.title.toLowerCase().includes(q) ||
+                      f.path.toLowerCase().includes(q) ||
+                      (f.category?.join(', ') || '').toLowerCase().includes(q)
+                  );
+              }
+          }
+      }
+
+      function formTable2() {
+          return {
+              search: '',
+              filterMatch(title, path, category) {
+                  const q = this.search.toLowerCase();
+                  return (
+                      title.toLowerCase().includes(q) ||
+                      path.toLowerCase().includes(q) ||
+                      category.toLowerCase().includes(q)
+                  );
+              }
+          }
+      }
+  </script>
+
+{% endblock main %}
+
+<div id="form_container" class="h-96 mb-4">
+  <ul class="py-2" id="forms-list" hx-ext="client-side-templates" hx-request='{"credentials": true, "noHeaders": true}'
+      hx-get="https://api.incdsb.ro/formio/demo/submission" hx-trigger="load" hx-swap="innerHTML" handlebars-array-template="forms-items"></ul>
+  <template id="forms-items">
+    {% raw %}
+      {{#each this}}
+      <li>{{ title }}</li>
+      {{/each}}
+    {% endraw %}
+  </template>
+</div>

@@ -1,0 +1,324 @@
+from flask import render_template, session, current_app
+from insbluemin.core.views import BaseView
+from insbluemin.core.decorators import *
+from insbluemin.core.auth_manager import current_user
+import requests
+from hashids import Hashids
+import time
+from .utils import check_form_permission
+import jwt
+
+# formio_api_url = 'https://api.incdsb.ro/formio/'
+
+api_key = 'api@incdsb.ro'
+api_secret = '1234'
+
+sqids_alphabet = 'OnYQomp2hvC74lAy0x1IGM8LwaNJKRDVEkq53XdjWBtegUZsSPzFHu6fbi9crT'
+salt = 'n7p-hQFjjz0gHK563xb536EmDoZnGyicn94-V8YsIlk='
+
+hashids = Hashids(
+    salt=salt,  # Set securely in config
+    min_length=24,
+    alphabet='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
+)
+
+
+class FormsView(BaseView):
+    default_view = 'index'
+
+    def __init__(self, app, menu):
+        print('loaded forms')
+        super().__init__(app, menu)
+        self.formio_api_url = app.config.get('FORMIO_API_URL')
+        self.api_key = api_key
+        self.api_secret = api_secret
+        self._machine_token = None
+        self._machine_token_expiry = 0
+
+    def get_machine_token(self):
+        current_time = time.time()
+        if self._machine_token and current_time < self._machine_token_expiry:
+            return self._machine_token
+
+        payload = {
+            "data": {
+                "api_key": self.api_key,
+                "api_secret": self.api_secret
+            }
+        }
+        response = requests.post(f"{self.formio_api_url}/machine/login", json=payload)
+        if response.status_code == 200:
+            token = response.headers.get('X-Jwt-Token')
+            if token:
+                try:
+                    decoded = jwt.decode(token, options={"verify_signature": False})
+                    exp = decoded.get('exp')
+                    if exp:
+                        self._machine_token = token
+                        self._machine_token_expiry = exp
+                        return token
+                except jwt.DecodeError:
+                    current_app.logger.error("Failed to decode JWT token.")
+            current_app.logger.error("Token not found in response headers.")
+        else:
+            current_app.logger.error(f"Error authenticating via API: {response.text}")
+        return None
+
+    def get_headers(self):
+        return {
+            # 'X-Auth-Request-Email': user_email,
+            'X-Jwt-Token': self.get_machine_token()
+        }
+
+    @staticmethod
+    def get_session_user():
+        user = session.get('_insb_user', {})
+        return user.get('email'), user.get('permissions', [])
+
+    @staticmethod
+    def encode_submission_id(object_id: str) -> str:
+        """
+        Encodes a MongoDB ObjectId (24-character hex string) into a Hashids string.
+        """
+        if not isinstance(object_id, str) or len(object_id) != 24:
+            raise ValueError("Invalid ObjectId format")
+        return hashids.encode_hex(object_id)
+
+    @staticmethod
+    def decode_submission_id(obfuscated_id: str) -> str:
+        """
+        Decodes a Hashids string back to a MongoDB ObjectId (hex string).
+        Raises ValueError if decoding fails or result is invalid.
+        """
+        try:
+            object_id = hashids.decode_hex(obfuscated_id)
+            if not object_id or len(object_id) != 24:
+                raise ValueError()
+            return object_id
+        except Exception as e:
+            raise ValueError(f"Invalid or corrupt submission ID: {obfuscated_id}") from e
+
+    @add_to_menu(location='sidebar', group='Forms', parent='Forms:fa-solid fa-file-lines', label='Forms', icon='fa-solid fa-file')
+    @has_permissions(['core.can_view'])
+    @expose('/', methods=['GET'])
+    def index(self):
+        print(request.headers.get('X-Auth-Request-Email'))
+        print(session.get('_insb_user', {}))
+        user_email, user_perms = self.get_session_user()
+
+        if not user_email:
+            # return redirect('/login')
+            return "You do not have permission to view this form", 403
+
+        response = requests.get(
+            f"{self.formio_api_url}form?type=form&select=title,name,path,tags,components",
+            headers=self.get_headers()
+        )
+        if response.status_code == 200:
+            print('index route')
+            forms = []
+            requested_category = request.args.get('category', '').lower()
+            for form in response.json():
+                del form['_id']
+                tags = form.get("tags", [])
+                description = form['components'][0].get('content', '')
+                del form['tags']
+                del form['components']
+
+                if not tags:
+                    continue
+
+                if not check_form_permission(user_perms, tags):
+                    continue
+
+                categories = [tag.split("cat:")[1] for tag in tags if tag.startswith("cat:")]
+                form["category"] = categories
+                form["description"] = description
+
+                if requested_category:
+                    if not any(c.lower() == requested_category for c in categories):
+                        continue
+
+                forms.append(form)
+            return self.render_template('forms.jinja2', title='Forms', forms=forms)
+        else:
+            current_app.logger.error(f"Error fetching forms: {response.text}")
+            return "Error fetching forms", response.status_code
+
+    @has_permissions(['core.can_view'])
+    @expose('/<form_path>', methods=['GET'])
+    def form_get(self, form_path):
+        # hack, remove after its done
+        if form_path == 'favicon.ico':
+            return '', 204
+
+        user_email, user_perms = self.get_session_user()
+
+        if not user_email:
+            # return redirect('/login')
+            return "You do not have permission to view this form", 403
+
+        response = requests.get(f"{self.formio_api_url}{form_path}?select=title,tags,name,components", headers=self.get_headers())
+        if response.status_code != 200:
+            current_app.logger.error(f"Error fetching form: {response.text}")
+            return "Error fetching form", response.status_code
+
+        form_data = response.json()
+        form_data.pop('_id', None)
+        print(form_data)
+        if not check_form_permission(user_perms, form_data.get('tags')):
+            return "You do not have permission to view this form", 403
+
+        form_data.pop('tags', None)
+        if request.args.get('form') == 'json':
+            return jsonify(form_data)
+        return self.render_template('forms-form.jinja2', title=response.json().get('title'))
+
+    @expose('/<form_path>', methods=['POST'])
+    @has_permissions(['core.can_view'])
+    def form_post(self, form_path):
+        user_email, user_perms = self.get_session_user()
+
+        if not user_email:
+            # return redirect('/login')
+            return jsonify({'message': 'You do not have permission to submit to this form'}), 403
+
+        # Step 1: Check form-level permissions
+        form_meta_response = requests.get(f"{self.formio_api_url}{form_path}?select=tags", headers=self.get_headers())
+        if form_meta_response.status_code != 200:
+            current_app.logger.error(f"Error fetching form metadata: {form_meta_response.text}")
+            return "Unable to verify form permissions", 403
+
+        form_tags = form_meta_response.json().get("tags", [])
+        if not check_form_permission(user_perms, form_tags):
+            return jsonify({'message': 'You do not have permission to submit to this form'}), 403
+
+        # Step 2: Submit the form
+        payload = request.get_json()
+        payload['data']['email'] = user_email
+        print(payload)
+
+        response = requests.post(
+            f"{self.formio_api_url}{form_path}/submission",
+            headers=self.get_headers(),
+            json=payload
+        )
+
+        if response.status_code in [200, 201]:
+            print('form_post route')
+            form_data = response.json()
+            return jsonify(form_data['data'])
+        else:
+            current_app.logger.error(f"Error submitting form: {response.text}")
+            return "Error submitting form", response.status_code
+
+    @expose('/<form_path>/submission', methods=['GET'])
+    @has_permissions(['core.can_view'])
+    def form_submissions(self, form_path):
+        print('form submissions')
+        user_email, user_perms = self.get_session_user()
+
+        # Step 1: Fetch form metadata to get tags
+        form_meta_response = requests.get(f"{self.formio_api_url}{form_path}?select=tags", headers=self.get_headers())
+        if form_meta_response.status_code != 200:
+            current_app.logger.error(f"Error fetching form metadata: {form_meta_response.text}")
+            return "Unable to verify form permissions", 403
+
+        form_tags = form_meta_response.json().get("tags", [])
+        if not check_form_permission(user_perms, form_tags):
+            return "You do not have permission to view submissions for this form", 403
+
+        # Step 2: Fetch submissions if permission granted
+        # @todo: if user has elevated rights, query all subs
+        submission_response = requests.get(
+            f"{self.formio_api_url}{form_path}/submission?data.email={user_email}",
+            headers=self.get_headers()
+        )
+
+        if submission_response.status_code == 200:
+            submissions = submission_response.json()
+            for sub in submissions:
+                real_id = sub.get('_id')
+                sub['obfuscated_id'] = self.encode_submission_id(real_id)
+                del sub['_id']
+
+            if request.args.get('form') == 'json':
+                return jsonify(submissions)
+
+            return self.render_template(
+                'forms-submissions.jinja2',
+                title=form_path,
+                submissions=submissions
+            )
+
+        else:
+            current_app.logger.error(f"Error fetching submissions: {submission_response.text}")
+            return "Error fetching submissions", submission_response.status_code
+
+    @expose('/<form_path>/submission/<submission_id>', methods=['GET'])
+    @has_permissions(['core.can_view'])
+    def form_single_submission(self, form_path, submission_id):
+        user_email, user_perms = self.get_session_user()
+        if not user_email:
+            return "You do not have permission", 403
+
+        # Step 1: Check form-level permission
+        form_meta_response = requests.get(f"{self.formio_api_url}{form_path}?select=tags", headers=self.get_headers())
+        if form_meta_response.status_code != 200:
+            current_app.logger.error(f"Error fetching form metadata: {form_meta_response.text}")
+            return "Unable to verify form permissions", 403
+
+        form_tags = form_meta_response.json().get("tags", [])
+        if not check_form_permission(user_perms, form_tags):
+            return "You do not have permission to view this submission", 403
+
+        # Step 2: Fetch the submission
+        real_id = self.decode_submission_id(submission_id)
+        response = requests.get(f"{self.formio_api_url}{form_path}/submission/{real_id}", headers=self.get_headers())
+        if response.status_code == 200:
+            # need to check if user_email and data.email from the form match, else fail
+            submission = response.json()
+            if request.args.get('form') == 'json':
+                return jsonify(submission)
+
+            return self.render_template(
+                'submission-view.jinja2',
+                title=form_path
+            )
+        else:
+            current_app.logger.error(f"Error fetching submission: {response.text}")
+            return "Error fetching submission", response.status_code
+
+    @expose('/<form_path>/submission/<submission_id>', methods=['PUT'])
+    @has_permissions(['core.can_view'])
+    def form_put(self, form_path, submission_id):
+        user_email, user_perms = self.get_session_user()
+
+        if not user_email:
+            # return redirect('/login')
+            return jsonify({'message': 'You do not have permission to submit to this form'}), 403
+
+        # Step 1: Check form-level permissions
+        form_meta_response = requests.get(f"{self.formio_api_url}{form_path}?select=tags", headers=self.get_headers())
+        if form_meta_response.status_code != 200:
+            current_app.logger.error(f"Error fetching form metadata: {form_meta_response.text}")
+            return "Unable to verify form permissions", 403
+
+        form_tags = form_meta_response.json().get("tags", [])
+        if not check_form_permission(user_perms, form_tags):
+            return jsonify({'message': 'You do not have permission to submit to this form'}), 403
+
+        # Step 2: Perform the update
+        payload = request.get_json()
+        real_id = self.decode_submission_id(submission_id)
+        response = requests.put(
+            f"{self.formio_api_url}{form_path}/submission/{real_id}",
+            headers=self.get_headers(),
+            json=payload
+        )
+
+        if response.status_code in [200, 201]:
+            return jsonify(response.json())
+        else:
+            current_app.logger.error(f"Error updating submission: {response.text}")
+            return "Error updating submission", response.status_code

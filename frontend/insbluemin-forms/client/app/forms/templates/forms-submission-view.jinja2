@@ -1,0 +1,47 @@
+{% extends 'base.jinja2' %}
+{% block stylesheet %}
+  <link rel="stylesheet" href="{{ url_for('Forms.static',filename='dist/css/forms.css') }}">
+{% endblock %}
+
+{% block html_head %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+  {#  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css">#}
+
+  <link rel="stylesheet" href="{{ url_for('Forms.static',filename='dist/css/bootstrap.css') }}">
+  <script src="{{ url_for('Forms.static',filename='dist/@formio/js/dist/formio.embed.js') }}"></script>
+
+
+{% endblock %}
+{% block title %} Forms {{ title }}: View {% endblock %}
+{% block main %}
+
+  <div id="form_container" class="h-96 mb-4">
+    <div id="formio-container"></div>
+    <script type="text/javascript">
+        {#localStorage.setItem("formioToken", "{{token}}");#}
+        {#const formioToken = localStorage.getItem("formioToken");#}
+
+        Formio.createForm(document.getElementById('formio-container'), window.location.href + '?form=json', {
+            readOnly: false,
+            renderMode: 'form'
+        });
+
+    </script>
+  </div>
+  {#
+<div class="grid grid-cols-2 gap-4">#}
+  {#
+  <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
+  #}
+  {#
+  <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
+  #}
+  {#
+  <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
+  #}
+  {#
+  <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
+  #}
+  {#
+</div>#}
+{% endblock main %}

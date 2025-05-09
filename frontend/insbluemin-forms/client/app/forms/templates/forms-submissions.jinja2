@@ -1,0 +1,212 @@
+{% extends 'base.jinja2' %}
+{% block stylesheet %}
+  <link rel="stylesheet" href="{{ url_for('Forms.static',filename='dist/css/forms.css') }}">
+{% endblock %}
+
+{% block html_head %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+  {#  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css">#}
+
+  <link rel="stylesheet" href="{{ url_for('Forms.static',filename='dist/css/bootstrap.css') }}">
+  <script src="{{ url_for('Forms.static',filename='dist/@formio/js/dist/formio.embed.js') }}"></script>
+
+{% endblock %}
+{% block title %} Forms {{ title }} {% endblock %}
+{% block main %}
+
+  <div x-data="submissionTable()" class="relative overflow-y-auto">
+    <div class="pb-4 bg-white dark:bg-gray-900">
+      <label for="table-search" class="sr-only">Search</label>
+      <div class="relative mt-1">
+        <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+          <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+          </svg>
+        </div>
+        <input type="text" id="table-search" x-model="search" placeholder="Cautare"
+               class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-100 focus:outline-none rounded-sm w-full bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+      </div>
+    </div>
+
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <tr>
+        {% if submissions %}
+          <th scope="col" class="px-6 py-3">created</th>
+          {% for key in submissions[0].data.keys() %}
+            {% if key != "submit" %}
+              {% if key == "auth_user_email" %}
+                <th scope="col" class="px-6 py-3">user</th>
+              {% else %}
+                <th scope="col" class="px-6 py-3">
+                  {{ key }}
+                </th>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+          <th scope="col" class="px-6 py-3"></th>
+        {% endif %}
+      </tr>
+      </thead>
+      <tbody>
+      {% for submission in submissions %}
+        <tr x-show="filterSubmission('{{ submission.obfuscated_id }}', [
+          {% for key, value in submission.data.items() if key != 'submit' %}
+            '{{ value | replace("'", "\\'") }}',
+          {% endfor %}
+        ])" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <td class="px-6 py-4">
+            {{ submission.created.strftime('%Y-%m-%d %H:%M') }}
+          </td>
+          {% for key, value in submission.data.items() %}
+            {% if key != "submit" %}
+              <td class="px-6 py-4">
+                {{ value }}
+              </td>
+            {% endif %}
+          {% endfor %}
+          <td class="px-6 py-4">
+            <a href="./submission/{{ submission.obfuscated_id }}">
+              <i class="fa-solid fa-pencil"></i>
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+      function submissionTable() {
+          return {
+              search: '',
+              filterSubmission(id, values) {
+                  const q = this.search.toLowerCase();
+                  return values.some(v => v.toLowerCase().includes(q)) || id.toLowerCase().includes(q);
+              }
+          }
+      }
+  </script>
+
+{% endblock main %}
+
+
+<div class="relative overflow-x-auto">
+  <div class="pb-4 bg-white dark:bg-gray-900">
+    <label for="table-search" class="sr-only">Search</label>
+    <div class="relative mt-1">
+      <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+        </svg>
+      </div>
+      <input type="text" id="table-search"
+             class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+             placeholder="Search for items">
+    </div>
+  </div>
+
+  <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <tr>
+      {% if submissions %}
+        {% for key in submissions[0].data.keys() %}
+          {% if key != "submit" %}
+            <th scope="col" class="px-6 py-3">
+              {{ key }}
+            </th>
+          {% endif %}
+        {% endfor %}
+        <th scope="col" class="px-6 py-3">
+
+        </th>
+      {% endif %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for submission in submissions %}
+      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+        {% for key, value in submission.data.items() %}
+          {% if key != "submit" %}
+            <td class="px-6 py-4">
+              {{ value }}
+            </td>
+          {% endif %}
+        {% endfor %}
+        <td class="px-6 py-4">
+          <a href="./submission/{{ submission.obfuscated_id }}">
+            <i class="fa-solid fa-pencil"></i>
+          </a>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+
+{#  <div class="grid grid-cols-2 gap-4">#}{#    <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>#}
+{#    <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>#}
+{#    <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>#}
+{#    <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>#}{#  </div>#}
+
+
+<div id="form_container" class="h-96 mb-4">
+  <div class="py-2" id="forms-list" hx-ext="client-side-templates" hx-request='{"credentials": false, "noHeaders": false}'
+       hx-get="https://api.incdsb.ro/formio/demo/submission" hx-headers='{"x-jwt-token": "{{ token }}"}' hx-trigger="load" hx-swap="innerHTML"
+       handlebars-array-template="forms-items">
+    <template id="forms-items">
+      {% raw %}
+        {{#with this.[0]}}
+        {{#each data}}
+        {{ @key }}
+        {{/each}}
+        {{/with}}
+
+      {% endraw %}
+      {% raw %}
+        {{#each this}}
+        {{#each data}}
+        {{ this }}
+        {{/each}}
+        <br>
+        {{/each}}
+      {% endraw %}
+    </template>
+  </div>
+</div>
+
+<div id="form_container" class="h-96 mb-4">
+  <div id="forms-list" hx-ext="client-side-templates" hx-request='{"credentials": false, "noHeaders": false}'
+       hx-get="https://api.incdsb.ro/formio/demo/submission" hx-headers='{"x-jwt-token": "{{ token }}"}' hx-trigger="load" hx-swap="innerHTML"
+       handlebars-array-template="forms-items"></div>
+
+  <template id="forms-items">
+    {% raw %}
+      <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        {{#with this.[0]}}
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <tr>
+          {{#each data}}
+          <th scope="col" class="px-6 py-3">
+            {{ @key }}
+          </th>
+          {{/each}}
+        </tr>
+        </thead>
+        {{/with}}
+        <tbody>
+        {{#each this}}
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          {{#each data}}
+          <td class="px-6 py-4">
+            {{ this }}
+          </td>
+          {{/each}}
+        </tr>
+        {{/each}}
+        </tbody>
+      </table>
+    {% endraw %}
+  </template>
+</div>

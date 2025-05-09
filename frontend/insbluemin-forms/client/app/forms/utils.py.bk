@@ -1,0 +1,47 @@
+import requests
+from flask import session, current_app
+import jwt
+
+formio_api_url = 'https://api.incdsb.ro/formio/'
+formio_secret_key = '--- change me now ---'
+
+admin_login_resource_id = requests.get(f"{formio_api_url}admin").json().get('_id')
+user_login_resource_id = requests.get(f"{formio_api_url}user").json().get('_id')
+admin_user_id = '681696af3c4eec6580b11c35'
+
+
+# Helper method to get user ID
+def get_user_id(user_email):
+    payload_admin = {
+        "form": {"_id": admin_login_resource_id},
+        "user": {"_id": admin_user_id}
+    }
+    token_admin = jwt.encode(payload_admin, formio_secret_key, algorithm="HS256")
+    headers = {
+        'X-Auth-Request-Email': user_email,
+        'X-Jwt-Token': token_admin
+    }
+    response = requests.get(f"{formio_api_url}user/exists?data.email={user_email}", headers=headers)
+    if response.status_code == 200:
+        return response.json().get('_id')
+    else:
+        current_app.logger.error(f"Error getting user ID: {response.text}")
+        return None
+
+
+# Helper method to generate user token
+def generate_user_token(user_id):
+    payload = {
+        "form": {"_id": user_login_resource_id},
+        "user": {"_id": user_id}
+    }
+    return jwt.encode(payload, formio_secret_key, algorithm="HS256")
+
+
+def get_authenticated_headers(user_email):
+    user_id = get_user_id(user_email)
+    token = generate_user_token(user_id)
+    return {
+        'X-Auth-Request-Email': user_email,
+        'X-Jwt-Token': token
+    }

@@ -1,0 +1,25 @@
+[project]
+name = "insbluemin-forms"
+version = "0.1.0"
+description = "Forms Package"
+readme = "README.md"
+requires-python = ">=3.6"
+authors = [
+    { name = "Eduard C.", email = "eduard.c.milea@incdsb.ro" }
+]
+license = { text = "MIT" }
+keywords = ["incdsb", "intranet"]
+dependencies = [
+    "pocketbase",
+    "flask"
+]
+
+#[tool.setuptools.packages.find]
+#include = ["insbluemin", "insbluemin.*"]
+#
+#[tool.setuptools.package-data]
+#'insbluemin' = ["*/templates/*.jinja2", "*/static/**/*.*"]
+#
+#[project.urls]
+#"Homepage" = "https://github.com/NIRDBS/insbluemin-core"
+#"Source" = "https://github.com/NIRDBS/insbluemin-core"
