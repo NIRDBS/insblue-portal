@@ -15,6 +15,10 @@ networks:
 services:
   client-forms:
     image: insbluemin-forms
+    build:
+      context: .
+    environment:
+        FORMIO_API_URL: ${FORMIO_API_URL}
     volumes:
       - /home/robert/insblue-portal/frontend/insbluemin-forms/client:/app
     networks:
