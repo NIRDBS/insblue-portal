@@ -15,8 +15,8 @@ networks:
 services:
   client-forms:
     image: insbluemin-forms
-#     build:
-#       context: .
+    build:
+      context: .
     environment:
         FORMIO_API_URL: ${FORMIO_API_URL}
     volumes:
