@@ -14,8 +14,6 @@ networks:
 services:
   server:
     image: insbluemin-filestash
-    build:
-      context: .
     volumes:
       - /home/robert/insbluemin-filestash/flask:/app
     networks:
