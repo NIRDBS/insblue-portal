@@ -1,0 +1,14 @@
+# insblue-portal/compose.yaml  (example)
+name: insblue-portal        # optional project name; keeps stacks separate
+include:
+  # UI modules
+  - ./ui/insbluemin-dashboard/docker-compose.yml
+  - ./ui/insbluemin-reports/docker-compose.yml
+
+  # API modules
+  - ./api/insblue-fastapi-auth/docker-compose.yml
+  - ./api/insblue-fastapi-data/docker-compose.yml
+
+networks:
+  traefik-network:
+    external: true
