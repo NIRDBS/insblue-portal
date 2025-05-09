@@ -14,8 +14,6 @@
 services:
   client-forms:
     image: insbluemin-forms
-    build:
-      context: .
     volumes:
       - /home/robert/insblue-portal/frontend/insbluemin-forms/client:/app
     networks:
