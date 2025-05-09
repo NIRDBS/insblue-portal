@@ -1,0 +1,8 @@
+logs/
+csv/
+.git/
+.idea/
+.stfolder/
+.DS_Store
+node_modules/
+sync.sh

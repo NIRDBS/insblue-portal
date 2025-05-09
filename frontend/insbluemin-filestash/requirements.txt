@@ -1,0 +1,15 @@
+Flask==3.0.3
+Flask-RESTful==0.3.10
+Flask-Session==0.8.0
+fontawesome==5.10.1.post1
+Markdown==3.7
+MarkupSafe==2.1.5
+pyjwt~=2.4.0
+pocketbase==0.12.1
+PyYAML==6.0.2
+requests==2.32.3
+tomli==2.0.1
+typing==3.7.4.3
+urllib3==2.2.3
+gunicorn==23.0.0
+insbluemin-core @ git+https://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@github.com/NIRDBS/insbluemin-core.git

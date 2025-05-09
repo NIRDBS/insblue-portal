@@ -1,0 +1,151 @@
+2025-05-06 21:04:33,405 [INFO] core::blueprints(L125): Filestash - Blueprint created
+2025-05-06 21:04:33,406 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:04:33,504 [INFO] core::blueprints(L215): Filestash - Registering to service registry: /
+2025-05-06 21:04:33,504 [INFO] core::blueprints(L234): Filestash - Adding url rule: /
+2025-05-06 21:04:33,505 [INFO] core::insbluecore(L63): Loaded plugin Filestash
+2025-05-06 21:05:27,139 [INFO] core::blueprints(L125): Filestash - Blueprint created
+2025-05-06 21:05:27,139 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:05:27,241 [INFO] core::blueprints(L215): Filestash - Registering to service registry: /
+2025-05-06 21:05:27,241 [INFO] core::blueprints(L234): Filestash - Adding url rule: /
+2025-05-06 21:05:27,242 [INFO] core::insbluecore(L63): Loaded plugin Filestash
+2025-05-06 21:05:30,895 [INFO] core::blueprints(L125): Filestash - Blueprint created
+2025-05-06 21:05:30,895 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:05:30,992 [INFO] core::blueprints(L215): Filestash - Registering to service registry: /
+2025-05-06 21:05:30,992 [INFO] core::blueprints(L234): Filestash - Adding url rule: /
+2025-05-06 21:05:30,993 [INFO] core::insbluecore(L63): Loaded plugin Filestash
+2025-05-06 21:05:49,114 [INFO] core::blueprints(L125): Filestash - Blueprint created
+2025-05-06 21:05:49,114 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:05:49,211 [INFO] core::blueprints(L215): Filestash - Registering to service registry: /
+2025-05-06 21:05:49,211 [INFO] core::blueprints(L234): Filestash - Adding url rule: /
+2025-05-06 21:05:49,212 [INFO] core::insbluecore(L63): Loaded plugin Filestash
+2025-05-06 21:06:22,693 [INFO] core::blueprints(L125): Filestash - Blueprint created
+2025-05-06 21:06:22,693 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:06:22,798 [INFO] core::blueprints(L215): Filestash - Registering to service registry: /
+2025-05-06 21:06:22,798 [INFO] core::blueprints(L234): Filestash - Adding url rule: /
+2025-05-06 21:06:22,799 [INFO] core::insbluecore(L63): Loaded plugin Filestash
+2025-05-06 21:06:23,210 [INFO] core::blueprints(L125): Filestash - Blueprint created
+2025-05-06 21:06:23,210 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:06:23,313 [INFO] core::blueprints(L215): Filestash - Registering to service registry: /
+2025-05-06 21:06:23,313 [INFO] core::blueprints(L234): Filestash - Adding url rule: /
+2025-05-06 21:06:23,314 [INFO] core::insbluecore(L63): Loaded plugin Filestash
+2025-05-06 21:07:16,132 [INFO] core::blueprints(L125): Filestash - Blueprint created
+2025-05-06 21:07:16,133 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:07:16,235 [INFO] core::blueprints(L215): Filestash - Registering to service registry: /
+2025-05-06 21:07:16,236 [INFO] core::blueprints(L234): Filestash - Adding url rule: /
+2025-05-06 21:07:16,237 [INFO] core::insbluecore(L63): Loaded plugin Filestash
+2025-05-06 21:07:16,662 [INFO] core::blueprints(L125): Filestash - Blueprint created
+2025-05-06 21:07:16,662 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:07:16,761 [INFO] core::blueprints(L215): Filestash - Registering to service registry: /
+2025-05-06 21:07:16,762 [INFO] core::blueprints(L234): Filestash - Adding url rule: /
+2025-05-06 21:07:16,762 [INFO] core::insbluecore(L63): Loaded plugin Filestash
+2025-05-06 21:08:09,296 [INFO] core::blueprints(L125): Filestash - Blueprint created
+2025-05-06 21:08:09,296 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:08:09,394 [INFO] core::blueprints(L215): Filestash - Registering to service registry: /
+2025-05-06 21:08:09,395 [INFO] core::blueprints(L234): Filestash - Adding url rule: /
+2025-05-06 21:08:09,396 [INFO] core::insbluecore(L63): Loaded plugin Filestash
+2025-05-06 21:08:09,823 [INFO] core::blueprints(L125): Filestash - Blueprint created
+2025-05-06 21:08:09,823 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:08:09,922 [INFO] core::blueprints(L215): Filestash - Registering to service registry: /
+2025-05-06 21:08:09,922 [INFO] core::blueprints(L234): Filestash - Adding url rule: /
+2025-05-06 21:08:09,923 [INFO] core::insbluecore(L63): Loaded plugin Filestash
+2025-05-06 21:20:06,141 [INFO] core::blueprints(L125): Filestash - Blueprint created
+2025-05-06 21:20:06,141 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:20:06,240 [INFO] core::blueprints(L215): Filestash - Registering to service registry: /
+2025-05-06 21:20:06,241 [INFO] core::blueprints(L234): Filestash - Adding url rule: /
+2025-05-06 21:20:06,241 [INFO] core::insbluecore(L63): Loaded plugin Filestash
+2025-05-06 21:20:06,646 [INFO] core::blueprints(L125): Filestash - Blueprint created
+2025-05-06 21:20:06,646 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:20:06,745 [INFO] core::blueprints(L215): Filestash - Registering to service registry: /
+2025-05-06 21:20:06,745 [INFO] core::blueprints(L234): Filestash - Adding url rule: /
+2025-05-06 21:20:06,746 [INFO] core::insbluecore(L63): Loaded plugin Filestash
+2025-05-06 21:37:59,965 [INFO] core::blueprints(L125): Filestash - Blueprint created
+2025-05-06 21:37:59,965 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:38:00,071 [INFO] core::blueprints(L215): Filestash - Registering to service registry: /
+2025-05-06 21:38:00,071 [INFO] core::blueprints(L234): Filestash - Adding url rule: /
+2025-05-06 21:38:00,071 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:38:00,072 [INFO] core::blueprints(L234): Filestash - Adding url rule: /<view_path>
+2025-05-06 21:38:00,073 [INFO] core::insbluecore(L63): Loaded plugin Filestash
+2025-05-06 21:38:27,730 [INFO] core::blueprints(L125): Filestash - Blueprint created
+2025-05-06 21:38:27,730 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:38:27,828 [INFO] core::blueprints(L215): Filestash - Registering to service registry: /
+2025-05-06 21:38:27,829 [INFO] core::blueprints(L234): Filestash - Adding url rule: /
+2025-05-06 21:38:27,829 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:38:27,829 [INFO] core::blueprints(L234): Filestash - Adding url rule: /<view_path>
+2025-05-06 21:38:27,830 [INFO] core::insbluecore(L63): Loaded plugin Filestash
+2025-05-06 21:39:11,273 [INFO] core::blueprints(L125): Filestash - Blueprint created
+2025-05-06 21:39:11,273 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:39:11,370 [INFO] core::blueprints(L215): Filestash - Registering to service registry: /
+2025-05-06 21:39:11,370 [INFO] core::blueprints(L234): Filestash - Adding url rule: /
+2025-05-06 21:39:11,370 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:39:11,370 [INFO] core::blueprints(L234): Filestash - Adding url rule: /<view_path>
+2025-05-06 21:39:11,371 [INFO] core::insbluecore(L63): Loaded plugin Filestash
+2025-05-06 21:39:26,897 [INFO] core::blueprints(L125): Filestash - Blueprint created
+2025-05-06 21:39:26,898 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:39:26,997 [INFO] core::blueprints(L215): Filestash - Registering to service registry: /
+2025-05-06 21:39:26,997 [INFO] core::blueprints(L234): Filestash - Adding url rule: /
+2025-05-06 21:39:26,997 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:39:26,997 [INFO] core::blueprints(L234): Filestash - Adding url rule: /view/<view_path>
+2025-05-06 21:39:26,998 [INFO] core::insbluecore(L63): Loaded plugin Filestash
+2025-05-06 21:43:10,829 [INFO] core::blueprints(L125): Filestash - Blueprint created
+2025-05-06 21:43:10,830 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:43:10,932 [INFO] core::blueprints(L215): Filestash - Registering to service registry: /
+2025-05-06 21:43:10,932 [INFO] core::blueprints(L234): Filestash - Adding url rule: /
+2025-05-06 21:43:10,932 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:43:10,932 [INFO] core::blueprints(L234): Filestash - Adding url rule: /view/<view_path>
+2025-05-06 21:43:10,934 [INFO] core::insbluecore(L63): Loaded plugin Filestash
+2025-05-06 21:53:41,110 [INFO] core::blueprints(L125): Filestash - Blueprint created
+2025-05-06 21:53:41,110 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:53:41,215 [INFO] core::blueprints(L215): Filestash - Registering to service registry: /
+2025-05-06 21:53:41,215 [INFO] core::blueprints(L234): Filestash - Adding url rule: /
+2025-05-06 21:53:41,215 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:53:41,215 [INFO] core::blueprints(L234): Filestash - Adding url rule: /view/<view_path>
+2025-05-06 21:53:41,216 [INFO] core::insbluecore(L63): Loaded plugin Filestash
+2025-05-06 21:54:18,036 [INFO] core::blueprints(L125): Filestash - Blueprint created
+2025-05-06 21:54:18,036 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:54:18,136 [INFO] core::blueprints(L215): Filestash - Registering to service registry: /
+2025-05-06 21:54:18,136 [INFO] core::blueprints(L234): Filestash - Adding url rule: /
+2025-05-06 21:54:18,136 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:54:18,136 [INFO] core::blueprints(L234): Filestash - Adding url rule: /view/<view_path>
+2025-05-06 21:54:18,137 [INFO] core::insbluecore(L63): Loaded plugin Filestash
+2025-05-06 21:54:50,770 [INFO] core::blueprints(L125): Filestash - Blueprint created
+2025-05-06 21:54:50,770 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:54:50,869 [INFO] core::blueprints(L215): Filestash - Registering to service registry: /
+2025-05-06 21:54:50,869 [INFO] core::blueprints(L234): Filestash - Adding url rule: /
+2025-05-06 21:54:50,869 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:54:50,869 [INFO] core::blueprints(L234): Filestash - Adding url rule: /static/dist/js/insblu.js
+2025-05-06 21:54:50,870 [INFO] core::insbluecore(L63): Loaded plugin Filestash
+2025-05-06 21:54:53,319 [INFO] core::blueprints(L125): Filestash - Blueprint created
+2025-05-06 21:54:53,319 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:54:53,415 [INFO] core::blueprints(L215): Filestash - Registering to service registry: /
+2025-05-06 21:54:53,415 [INFO] core::blueprints(L234): Filestash - Adding url rule: /
+2025-05-06 21:54:53,416 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:54:53,416 [INFO] core::blueprints(L234): Filestash - Adding url rule: /static/dist/js/insblu.js
+2025-05-06 21:54:53,417 [INFO] core::insbluecore(L63): Loaded plugin Filestash
+2025-05-06 21:55:51,202 [INFO] core::blueprints(L125): Filestash - Blueprint created
+2025-05-06 21:55:51,202 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:55:51,305 [INFO] core::blueprints(L215): Filestash - Registering to service registry: /
+2025-05-06 21:55:51,305 [INFO] core::blueprints(L234): Filestash - Adding url rule: /
+2025-05-06 21:55:51,305 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:55:51,305 [INFO] core::blueprints(L234): Filestash - Adding url rule: /static/dist/js/insblu.js
+2025-05-06 21:55:51,307 [INFO] core::insbluecore(L63): Loaded plugin Filestash
+2025-05-06 21:56:46,100 [INFO] core::blueprints(L125): Filestash - Blueprint created
+2025-05-06 21:56:46,100 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:56:46,202 [INFO] core::blueprints(L215): Filestash - Registering to service registry: /
+2025-05-06 21:56:46,202 [INFO] core::blueprints(L234): Filestash - Adding url rule: /
+2025-05-06 21:56:46,202 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:56:46,202 [INFO] core::blueprints(L234): Filestash - Adding url rule: /static/dist/js/insblu.js
+2025-05-06 21:56:46,204 [INFO] core::insbluecore(L63): Loaded plugin Filestash
+2025-05-06 21:57:11,860 [INFO] core::blueprints(L125): Filestash - Blueprint created
+2025-05-06 21:57:11,860 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:57:11,962 [INFO] core::blueprints(L215): Filestash - Registering to service registry: /
+2025-05-06 21:57:11,962 [INFO] core::blueprints(L234): Filestash - Adding url rule: /
+2025-05-06 21:57:11,962 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:57:11,962 [INFO] core::blueprints(L234): Filestash - Adding url rule: /static/dist/js/insblu.js
+2025-05-06 21:57:11,963 [INFO] core::insbluecore(L63): Loaded plugin Filestash
+2025-05-06 21:58:41,359 [INFO] core::blueprints(L125): Filestash - Blueprint created
+2025-05-06 21:58:41,359 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:58:41,461 [INFO] core::blueprints(L215): Filestash - Registering to service registry: /
+2025-05-06 21:58:41,461 [INFO] core::blueprints(L234): Filestash - Adding url rule: /
+2025-05-06 21:58:41,462 [INFO] core::views(L14): FilestashView - View registered
+2025-05-06 21:58:41,462 [INFO] core::blueprints(L234): Filestash - Adding url rule: /static/dist/js/insblu.js
+2025-05-06 21:58:41,463 [INFO] core::insbluecore(L63): Loaded plugin Filestash
