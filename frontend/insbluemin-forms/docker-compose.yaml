@@ -1,0 +1,33 @@
+# Comments are provided throughout this file to help you get started.
+# If you need more help, visit the Docker Compose reference guide at
+# https://docs.docker.com/go/compose-spec-reference/
+
+# Here the instructions define your application as a service called "server".
+# This service is built from the Dockerfile in the current directory.
+# You can add other services your application may depend on here, such as a
+# database or a cache. For examples, see the Awesome Compose repository:
+# https://github.com/docker/awesome-compose
+# networks:
+#   traefik-network:
+#     external: true
+
+services:
+  client-forms:
+    image: insbluemin-forms
+    build:
+      context: .
+    volumes:
+      - /home/robert/insblue-portal/frontend/insbluemin-forms/client:/app
+    networks:
+      - traefik-network
+    dns:
+      - 10.1.50.33
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.insbluemin-forms.rule=(Host(`insblue.incdsb.ro`) && PathPrefix(`/forms/`))"
+      - "traefik.http.routers.insbluemin-forms.tls=true"
+      - "traefik.http.routers.insbluemin-forms.service=insbluemin-forms"
+      - "traefik.http.middlewares.insbluemin-forms-stripprefix.stripprefix.prefixes=/forms/"
+      - "traefik.http.routers.insbluemin-forms.middlewares=insbluemin-forms-stripprefix"
+      - "traefik.http.services.insbluemin-forms.loadbalancer.server.port=5000"
