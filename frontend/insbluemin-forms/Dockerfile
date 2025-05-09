@@ -63,7 +63,7 @@ RUN --mount=type=bind,source=requirements.txt,target=requirements.txt \
 USER appuser
 
 # Copy the source code into the container.
-COPY ./client .
+# COPY ./client .
 
 
 # Expose the port that the application listens on.
