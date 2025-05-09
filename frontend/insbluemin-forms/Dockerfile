@@ -46,18 +46,14 @@ RUN adduser \
     --uid "${UID}" \
     appuser
 
-#RUN apt-get update && apt-get install -y \
-#    wget
-RUN apk add --no-cache wget
-#    git
-#RUN apk add --no-cache git
 
 # Download dependencies as a separate step to take advantage of Docker's caching.
 # Leverage a cache mount to /root/.cache/pip to speed up subsequent builds.
 # Leverage a bind mount to requirements.txt to avoid having to copy them into
 # into this layer.
-RUN --mount=type=bind,source=requirements.txt,target=requirements.txt \
-    python -m pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
 
 # Switch to the non-privileged user to run the application.
 USER appuser
