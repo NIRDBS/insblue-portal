@@ -1,31 +1,21 @@
-# Comments are provided throughout this file to help you get started.
-# If you need more help, visit the Docker Compose reference guide at
-# https://docs.docker.com/go/compose-spec-reference/
-
-# Here the instructions define your application as a service called "server".
-# This service is built from the Dockerfile in the current directory.
-# You can add other services your application may depend on here, such as a
-# database or a cache. For examples, see the Awesome Compose repository:
-# https://github.com/docker/awesome-compose
 networks:
   traefik-network:
     external: true
 
 services:
   server:
-    image: insbluemin-filestash
+    image: insb-fastapi-email
+    container_name: insb-fastapi-email
     volumes:
-      - /home/robert/insbluemin-filestash/flask:/app
+      - /home/robert/insblue-fastapi-email/app:/app
     networks:
       - traefik-network
-    dns:
-      - 10.1.50.33
-
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.insbluemin-filestash.rule=(Host(`insblue.incdsb.ro`) && PathPrefix(`/files/`))"
-      - "traefik.http.routers.insbluemin-filestash.tls=true"
-      - "traefik.http.routers.insbluemin-filestash.service=insbluemin-filestash"
-      - "traefik.http.middlewares.insbluemin-filestash-stripprefix.stripprefix.prefixes=/files/"
-      - "traefik.http.routers.insbluemin-filestash.middlewares=insbluemin-filestash-stripprefix"
-      - "traefik.http.services.insbluemin-filestash.loadbalancer.server.port=5000"
+      - "traefik.http.routers.email.rule=(Host(`api.incdsb.ro`) && PathPrefix(`/_services/email/`))"
+      - "traefik.http.routers.email.tls=true"
+      - "traefik.http.services.email.loadbalancer.server.port=8000"
+      - "traefik.http.routers.email.middlewares=email-stripprefix,oauth@docker"
+      - "traefik.http.middlewares.email-stripprefix.stripprefix.prefixes=/_services/email/"
+
+
